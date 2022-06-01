@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/desafio-02-acessibilidade/static/css/main.8ddb4cec.css",
+    "main.js": "/desafio-02-acessibilidade/static/js/main.8925920a.js",
+    "static/js/787.7cfe58da.chunk.js": "/desafio-02-acessibilidade/static/js/787.7cfe58da.chunk.js",
+    "index.html": "/desafio-02-acessibilidade/index.html",
+    "main.8ddb4cec.css.map": "/desafio-02-acessibilidade/static/css/main.8ddb4cec.css.map",
+    "main.8925920a.js.map": "/desafio-02-acessibilidade/static/js/main.8925920a.js.map",
+    "787.7cfe58da.chunk.js.map": "/desafio-02-acessibilidade/static/js/787.7cfe58da.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8ddb4cec.css",
+    "static/js/main.8925920a.js"
+  ]
+}
