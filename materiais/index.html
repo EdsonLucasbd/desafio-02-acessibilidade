@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7f9;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .container td {
+            text-align: center;
+        }
+
+        .btn {
+            width: 256px;
+            height: 48px;
+            border-radius: 10px;
+            padding: 0;
+            background-color: #e63888;
+            color: #ffffff;
+            box-shadow: none;
+            outline: none;
+            border: 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+            border: 2px solid #CC196B;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal .content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+        }
+
+        .modal .title {
+            font-size: 26px;
+            color: rgba(0, 8, 38, 0.8);
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+            color: rgba(0, 8, 38, 0.8);
+        }
+
+        .form-group label {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input, .form-group textarea {
+            border-radius: 10px;
+            border: solid 1px rgba(0, 8, 38, 0.16);
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .form-group input {
+            height: 48px;
+        }
+
+        .form-group input:hover, .form-group input:focus {
+            border: solid 1px #0b64e0;
+        }
+
+        .modal .btn {
+            margin-top: 24px;
+            float: right;
+        }
+
+        #rating {
+            display: flex;
+            justify-content: space-around;
+            font-size: 32px;
+        }
+
+        #rating .checked {
+            color: orange;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table class="container">
+        <tr>
+            <td><button id="myBtn" class="btn">Open Modal</button></td>
+        </tr>
+    </table>
+
+    <div id="myModal" class="modal">
+        <div class="content">
+            <span class="close">&times;</span>
+            <div class="title">Deixa seu feedback</div>
+            <div id="form">
+                <div class="form-group">
+                    <label>Seu nome:</label>
+                    <input type="text" id="name" />
+                </div>
+
+                <div class="form-group">
+                    <label>Sua nota:</label>
+                    <div id="rating">
+                        <span data-value="1" class="rate fa fa-star"></span>
+                        <span data-value="2" class="rate fa fa-star"></span>
+                        <span data-value="3" class="rate fa fa-star"></span>
+                        <span data-value="4" class="rate fa fa-star"></span>
+                        <span data-value="5" class="rate fa fa-star"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Sua mensagem:</label>
+                    <textarea id="message"></textarea>
+                </div>
+
+                <button id="sendFeedback" class="btn">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var modal = document.getElementById('myModal'),
+            btn = document.getElementById('myBtn'),
+            span = document.getElementsByClassName('close')[0],
+            rating = document.getElementById('rating'),
+            form = document.getElementById('form');
+        var rates = Array.from(rating.getElementsByClassName('rate'));
+
+        btn.onclick = function () {
+            modal.style.display = "flex";
+        }
+
+        rates.forEach(function (rate) {
+            var value = parseInt(rate.dataset.value);
+            rate.onclick = function () {
+                rates.forEach(function (r, index) {
+                    if (index + 1 <= value) {
+                        r.classList.add('checked');
+                    } else {
+                        r.classList.remove('checked');
+
+                    }
+                })
+            }
+        });
+
+        span.onclick = function () {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        
+
+        document.getElementById('sendFeedback').onclick = function (event) {
+            var body = {
+                name: document.getElementById('name').value,
+                rating: document.getElementById('rating').getElementsByClassName('checked').length,
+                message: document.getElementById('message').value
+            }
+
+            fetch('https://5f4b11f341cb390016de37aa.mockapi.io/api/v1/feedback', {
+                method: 'POST',
+                body: JSON.stringify(body) 
+            }).then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                console.log(data);
+            })
+
+            modal.style.display = 'none';
+        }
+
+    </script>
+</body>
+
+</html>
